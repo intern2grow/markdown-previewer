@@ -1,48 +1,36 @@
 import './App.css';
-import React, {useState} from 'react';
-import {marked} from 'marked'
-
+import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom';
 const App = () => {
-  const [code, setCode] = useState('## Hello')
-  const [compiled, setCompiled] = useState('<h2 id="hello">Hello</h2>')
-  const [hide, hidePreview] = useState(true)
 
-  const openMD = () => {
-    console.log(0)
-    hidePreview(true)
-  }
-
-  const openPreview = () => {
-    console.log(0)
-    hidePreview(false)
-  }
-
-  const handleChange = (e) => {
-    setCode(e.target.value)
-    setCompiled(marked.parse(e.target.value))
-  }
+  const [compiled, setCompiled] = useState('<h2 id="hello">Hello</h2>');
 
   return (
     <>
-      <h1>MarkDown Previewer React App</h1>
+      <h1 className="main-heading">MarkDown Previewer React App</h1>
       <div className="container">
         <div className="btns">
-          <button onClick={openMD} className="btn">MarkDown</button>
-          <button onClick={openPreview}>Preview</button>
+          <NavLink to="/" className={`btn ${({ isActive }) => 'active'}`}>
+            MarkDown
+          </NavLink>
+          <NavLink
+            to="/preview"
+            className={`btn ${({ isActive }) => 'active'}`}
+          >
+            Preview
+          </NavLink>
+          <NavLink
+            to="/document"
+            className={`btn ${({ isActive }) => 'active'}`}
+          >
+            Docs
+          </NavLink>
         </div>
-        {
-        hide ? 
-          <div>
-            <textarea onChange={handleChange} value={code}/>
-          </div> : 
-          <div>
-            <textarea value={compiled}/>
-          </div>
-        }
+        <Outlet context={[compiled, setCompiled]} />
       </div>
     </>
-  )
-}
-
+  );
+};
 
 export default App;
