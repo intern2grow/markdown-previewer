@@ -25,29 +25,29 @@ h1{
     background-color: #080808;
     padding: 10px 5px 5px 5px;
     box-sizing: border-box;
-    border-radius: 4px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     -ms-border-radius: 4px;
     -o-border-radius: 4px;
+    border-radius: 4px;
 }
 .btns{
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: minmax(60px, auto);
+    display:flex;
+    justify-content: space-between;
 }
 .btns button{
     padding: 8px;
+    width: 100%;
     margin: 5px;
     background-color: #262834;
     color: #e3e3e3;
     border: none;
     cursor: pointer;
-    border-radius: 4px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     -ms-border-radius: 4px;
     -o-border-radius: 4px;
+    border-radius: 4px;
     font-weight: 500;
 }
 .btns button.btn{
@@ -70,11 +70,11 @@ textarea{
     outline: none;
     background-color: #121212;
     resize: none;
-    border-radius: 4px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     -ms-border-radius: 4px;
     -o-border-radius: 4px;
+    border-radius: 4px;
     color: #e3e3e3;
     padding: 5px;
     box-sizing: border-box;
