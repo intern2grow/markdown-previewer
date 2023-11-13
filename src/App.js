@@ -1,44 +1,61 @@
 import './App.css';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {marked} from 'marked'
+import DocsComponent from './components/DocsComponent';
+import useLocalstorage from './hooks/useLocalstorage';
 
 const App = () => {
-  const [code, setCode] = useState('## Hello')
-  const [compiled, setCompiled] = useState('<h2 id="hello">Hello</h2>')
-  const [hide, hidePreview] = useState(true)
 
-  const openMD = () => {
-    console.log(0)
-    hidePreview(true)
-  }
+  const [code, setCode] = useLocalstorage('code' ,'## Hello')
+  const [compiled, setCompiled] = useState(() => {
+    const storedCode = localStorage.getItem('code');
+    return storedCode ? marked.parse(storedCode) : '<h2 id="hello">Hello</h2>';
+  });
 
-  const openPreview = () => {
-    console.log(0)
-    hidePreview(false)
-  }
+  const [mode, setMode] = useState('MarkDown');
+    
+  const switchMode = (newMode) => {
+    setMode(newMode);
+  };
 
   const handleChange = (e) => {
-    setCode(e.target.value)
-    setCompiled(marked.parse(e.target.value))
+    setCode(e.target.value);
   }
+
+  useEffect(() => {
+    setCompiled(marked(code));
+  }, [code]);
 
   return (
     <>
       <h1>MarkDown Previewer React App</h1>
       <div className="container">
         <div className="btns">
-          <button onClick={openMD} className="btn">MarkDown</button>
-          <button onClick={openPreview}>Preview</button>
+          <button onClick={() => switchMode('MarkDown')}  className={`${mode === 'MarkDown'? 'active' : ''}`} >
+            MarkDown
+          </button>
+          <button onClick={() => switchMode('Preview')}  className={`${mode === 'Preview'? 'active' : ''}`}>
+            Preview
+          </button>
+          <button onClick={() => switchMode('Docs')}  className={`${mode === 'Docs'? 'active' : ''}`} >
+            Docs
+          </button>
         </div>
-        {
-        hide ? 
+        
+        {mode === 'MarkDown' &&(
           <div>
-            <textarea onChange={handleChange} value={code}/>
-          </div> : 
-          <div>
-            <textarea value={compiled}/>
+            <textarea onChange={handleChange} value={code}  />
           </div>
+        )}
+        
+        {mode === 'Preview' && (
+          <div>
+            <textarea value={compiled} readOnly/>
+          </div>
+        )
         }
+        {mode === 'Docs' && <DocsComponent/>}
+        
       </div>
     </>
   )
